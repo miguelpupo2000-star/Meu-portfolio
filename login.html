@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel do Administrador</title>
+    
+    <!-- Font Awesome para os ícones -->
+    <link rel="stylesheet" href="https://cloudflare.com">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Monaco', 'Courier New', Courier, monospace;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #121212;
+            overflow: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(rgba(255, 51, 51, 0.05) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(255, 51, 51, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+            z-index: 1;
+        }
+
+       .login-box {
+    position: relative;
+    width: 380px;
+    padding: 50px 40px;
+    background: rgba(26, 26, 26, 0.65);
+    border-radius: 16px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 51, 51, 0.3);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 15px rgba(255, 51, 51, 0.1);
+    z-index: 10;
+    
+    /* NOVA LINHA: Adiciona suavidade caso a caixa se mova ou mude de brilho */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+        h2 {
+            color: #ff3333;
+            text-align: center;
+            margin-bottom: 45px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-shadow: 0 2px 10px rgba(255, 51, 51, 0.3);
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 35px;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 0;
+            top: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 5px 12px 30px;
+            font-size: 15px;
+            color: #ffffff;
+            background: transparent;
+            border: none;
+            border-bottom: 1.5px solid rgba(255, 255, 255, 0.2);
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .input-group label {
+            position: absolute;
+            top: 12px;
+            left: 30px;
+            color: rgba(255, 255, 255, 0.5);
+            pointer-events: none;
+            transition: 0.3s ease;
+        }
+
+        .input-group input:focus~label,
+        .input-group input:valid~label {
+            top: -18px;
+            left: 0;
+            font-size: 12px;
+            color: #ff3333;
+        }
+
+        .input-group input:focus~i,
+        .input-group input:valid~i {
+            color: #ff3333;
+        }
+
+        .input-group input:focus {
+            border-bottom: 1.5px solid #ff3333;
+        }
+
+       .login-box:hover {
+    transform: scale(1.02); /* Aumenta a caixa em 2% de tamanho */
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6), 0 0 25px rgba(255, 51, 51, 0.25); /* Intensifica o brilho vermelho */
+}
+
+/* 2. Botão de Acessar atualizado com transições e efeitos extras */
+.login-btn {
+    width: 100%;
+    padding: 14px;
+    background: #ff3333;
+    border: none;
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-top: 10px;
+    
+    /* LINHA ATUALIZADA: Suaviza cor, sombra e tamanho ao mesmo tempo */
+    transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease;
+}
+
+.login-btn:hover {
+    background: #b30000;
+    box-shadow: 0 0 20px rgba(255, 51, 51, 0.5); /* Sombra neon vermelha mais forte */
+    transform: translateY(-2px); /* Faz o botão subir 2 pixels */
+}
+
+/* NOVO BLOCO: Efeito de clique físico real no botão */
+.login-btn:active {
+    transform: translateY(1px); /* Quando clicado, ele afunda levemente */
+    box-shadow: 0 0 10px rgba(255, 51, 51, 0.3);
+}
+
+        .back-link {
+            text-align: center;
+            margin-top: 30px;
+            color: #a0aec0;
+            font-size: 13px;
+        }
+
+        .back-link a {
+            color: #ff3333;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* PAINEL SECRETO */
+       /* 1. Painel Adaptável (Mudamos de width fixo para max-width) */
+.admin-panel {
+    display: none;
+    position: relative;
+    width: 100%; /* Ocupa o espaço disponível */
+    max-width: 800px; /* Mas não passa de 800px em telas grandes */
+    background: #1a1a1a;
+    border-radius: 12px;
+    border: 2px solid #ff3333;
+    box-shadow: 0 0 30px rgba(255, 51, 51, 0.2);
+    z-index: 10;
+    padding: 30px;
+    color: #e0e0e0;
+}
+
+/* 2. Grid Inteligente (Muda o número de colunas sozinho conforme o espaço) */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+}
+
+/* ==================================================
+   MEDIA QUERIES (Responsividade Avançada)
+   ================================================== */
+
+/* Quando a tela do aparelho for menor que 600px (Celulares) */
+@media (max-width: 600px) {
+    body {
+        padding: 15px; /* Adiciona uma folga nas bordas da tela */
+    }
+
+    .login-box {
+        width: 100%; /* A caixa de login ocupa a largura total do celular */
+        padding: 40px 20px; /* Reduz o espaçamento interno para caber tudo */
+    }
+
+    .admin-panel {
+        padding: 15px; /* Diminui o espaço interno do painel */
+    }
+
+    .panel-header {
+        flex-direction: column; /* Joga o botão de Sair para baixo do título */
+        align-items: flex-start; /* Alinha tudo à esquerda */
+        gap: 15px; /* Cria um espaço entre eles */
+    }
+
+    .panel-header h3 {
+        font-size: 14px; /* Diminui o título para não quebrar a linha */
+    }
+
+    .stat-card h4 {
+        font-size: 18px; /* Diminui os números grandes no celular */
+    }
+}
+
+
+        .terminal-log {
+            background: #0a0a0a;
+            border: 1px solid #333;
+            border-radius: 6px;
+            padding: 15px;
+            margin-top: 25px;
+            height: 120px;
+            overflow-y: auto;
+            font-size: 13px;
+            color: #00ff00;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Caixa de Login -->
+    <div class="login-box" id="loginBox">
+        <form id="loginForm">
+            <h2>SISTEMA</h2>
+            
+            <div class="input-group">
+                <i class="fas fa-user"></i>
+                <input type="text" id="username" required>
+                <label>Administrador</label>
+            </div>
+            
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="password" required>
+                <label>Senha Secreta</label>
+            </div>
+          
+            <button type="submit" class="login-btn" id="submitBtn">Acessar</button>
+            
+            <p class="back-link">
+                <a href="index.html">← Voltar para o Portfólio</a>
+            </p>
+        </form>
+    </div>
+
+    <!-- Painel Secreto -->
+    <div class="admin-panel" id="adminPanel">
+        <div class="panel-header">
+            <h3><i class="fas fa-terminal"></i> PAINEL DO ADMINISTRADOR v1.0</h3>
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <a href="index.html" style="color: #ff3333; text-decoration: none; font-size: 12px; border: 1px solid #ff3333; padding: 4px 8px; border-radius: 4px;">Sair</a>
+                <div>
+                    <span class="status-dot"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <p>Acessos Hoje</p>
+                <h4>1.432</h4>
+            </div>
+            <div class="stat-card">
+                <p>Uso da CPU</p>
+                <h4>24%</h4>
+            </div>
+            <div class="stat-card">
+                <p>Cliques no "Enviar"</p>
+                <h4>89</h4>
+            </div>
+        </div>
+
+        <div class="terminal-log">
+            <p>[SYSTEM]: Carregando módulos de segurança...</p>
+            <p>[SYSTEM]: Login efetuado com sucesso como ADMIN.</p>
+            <p>[SYSTEM]: Modo Deus ativado. Pronto para comandos.</p>
+        </div>
+    </div>
+                                     
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginForm = document.getElementById('loginForm');
+            const submitBtn = document.getElementById('submitBtn');
+            const loginBox = document.getElementById('loginBox');
+            const adminPanel = document.getElementById('adminPanel');
+
+            loginForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                submitBtn.innerText = 'Verificando...';
+                submitBtn.disabled = true;
+
+                const usernameInput = document.getElementById('username').value;
+                const passwordInput = document.getElementById('password').value;
+
+                setTimeout(() => {
+                    if (usernameInput === 'admin' && passwordInput === '123') {
+                        // CÓDIGO CORRIGIDO AQUI:
+                        loginBox.style.display = 'none';
+                        adminPanel.style.display = 'block';
+                    } else {
+                        alert('Acesso Negado! Usuário ou senha incorretos.');
+                        submitBtn.innerText = 'Acessar';
+                        submitBtn.disabled = false;
+                        loginForm.reset();
+                    }
+                }, 1000);
+            });
+        });
+    </script>
+</body>
+</html>

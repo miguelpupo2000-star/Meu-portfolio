@@ -1,0 +1,311 @@
+/* Configurações Globais */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Monaco', 'Courier New', Courier, monospace;
+    background-color: #121212; /* Fundo geral escuro */
+    color: #e0e0e0; /* Texto claro */
+    line-height: 1.6;
+}
+
+/* Barra de Navegação */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1a1a1a; /* Preto levemente mais claro */
+    padding: 20px 10%;
+    color: white;
+    border-bottom: 2px solid #ff3333; /* Linha vermelha fina */
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ff3333; /* Logo em vermelho */
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+}
+
+.nav-links li {
+    margin-left: 20px;
+}
+
+.nav-links a {
+    color: #e0e0e0;
+    text-decoration: none;
+    font-weight: 500;
+    
+    /* NOVA LINHA: Suaviza a mudança de cor do texto */
+    transition: color 0.2s ease;
+}
+
+.nav-links a:hover {
+    color: #ff3333; /* Links acendem em vermelho ao passar o mouse */
+}
+
+/* Banner de Apresentação (Hero) */
+/* Banner de Apresentação (Hero) com imagem no tamanho exato */
+.hero {
+    /* Troque o link abaixo pelo link da sua imagem ou por 'nome-da-imagem.jpg' */
+    background-image: url('http://server.wallpaperalchemy.com/storage/wallpapers/402/berserk-guts-berserker-armor-4k-wallpaper.jpg'); 
+    
+    /* Configurações de tamanho e posicionamento */
+    background-size: cover;        /* Força a imagem a preencher todo o espaço do bloco */
+    background-position: center;    /* Mantém o meio da imagem sempre visível */
+    background-repeat: no-repeat;  /* Não deixa a imagem duplicar */
+    
+    color: white;
+    text-align: center;
+    padding: 100px 20px;           /* Mantém exatamente a mesma altura do primeiro código */
+}
+
+
+
+.hero h1 {
+    font-size: 2.8rem;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.hero p {
+    font-size: 1.3rem;
+    margin-bottom: 30px;
+    opacity: 0.9;
+}
+
+.btn {
+    background-color: #ffffff;
+    color: #660000;
+    padding: 12px 24px;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+.btn:hover {
+    background-color: #ff3333;
+    color: white;
+}
+
+/* Container do Conteúdo */
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+.section {
+    margin-bottom: 60px;
+}
+
+.section h2 {
+    font-size: 2rem;
+    border-bottom: 3px solid #ff3333; /* Linha abaixo do título em vermelho */
+    display: inline-block;
+    margin-bottom: 20px;
+    padding-bottom: 5px;
+    color: #ff3333;
+}
+
+/* Grade de Projetos (Cards) */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background: #1a1a1a;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    border: 1px solid #333333;
+    
+    /* NOVA LINHA: Diz ao navegador para animar qualquer mudança em 0.3 segundos */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; 
+}
+
+/* NOVO BLOCO: Efeito quando o mouse passa por cima do card */
+.card:hover {
+    transform: translateY(-5px); /* Faz o card subir levemente 5 pixels */
+    box-shadow: 0 10px 20px rgba(255, 51, 51, 0.15); /* Adiciona um brilho vermelho sutil no fundo */
+}
+
+.card h3 {
+    margin-bottom: 10px;
+    color: #ff3333; /* Título do projeto em vermelho */
+}
+
+.card p {
+    margin-bottom: 15px;
+    color: #b3b3b3;
+}
+
+.link-projeto {
+    color: #ff6666;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.link-projeto:hover {
+    text-decoration: underline;
+}
+
+/* Botões de Contato */
+.contato-links {
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.btn-contato {
+    background-color: #262626;
+    color: #e0e0e0;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: 500;
+    border: 1px solid #333333;
+    
+    /* NOVA LINHA: Suaviza a troca de cor de fundo e da borda */
+    transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-contato:hover {
+    background-color: #ff3333;
+    color: white;
+    border-color: #ff3333;
+    transform: scale(1.05); /* Faz o botão aumentar 5% de tamanho no clique/hover */
+}
+
+
+/* Rodapé */
+footer {
+    text-align: center;
+    padding: 30px;
+    background-color: #0a0a0a;
+    color: #666666;
+    margin-top: 40px;
+    border-top: 1px solid #222222;
+}
+
+/* ==================================================
+   MEDIA QUERIES (Responsividade do Portfólio)
+   ================================================== */
+
+/* Quando a tela do aparelho for menor que 768px (Tablets e Celulares) */
+@media (max-width: 768px) {
+    
+    /* 1. Ajuste do Menu de Navegação */
+    .navbar {
+        flex-direction: column; /* Empilha a logo e os links em linhas separadas */
+        gap: 15px; /* Cria um espaço entre a logo e o menu */
+        padding: 15px 5%; /* Reduz o espaçamento nas laterais */
+        text-align: center;
+    }
+
+    .nav-links {
+        padding: 0;
+        justify-content: center;
+        flex-wrap: wrap; /* Se os links forem grandes, eles quebram linha organizados */
+        gap: 10px;
+    }
+
+    .nav-links li {
+        margin-left: 0; /* Remove a margem esquerda antiga para centralizar */
+    }
+
+    /* 2. Ajuste do Banner Principal (Hero) */
+    .hero h1 {
+        font-size: 2rem; /* Diminui o tamanho da letra para não cortar no celular */
+    }
+
+    .hero p {
+        font-size: 1rem;
+    }
+
+    /* Ajusta o botão e o campo de texto para ficarem um embaixo do outro */
+    .hero .btn, #btn-mudar-texto {
+        display: block;
+        width: 100%;
+        max-width: 250px;
+        margin: 10px auto !important; /* Centraliza os botões empilhados */
+    }
+
+    /* 3. Ajuste do Container de Conteúdo */
+    .container {
+        padding: 20px 15px; /* Diminui as margens para aproveitar a tela do celular */
+    }
+
+    /* 4. Ajuste dos Links de Contato */
+    .contato-links {
+        flex-direction: column; /* Empilha os botões de e-mail e GitHub */
+        align-items: center;
+    }
+
+    .btn-contato {
+        width: 100%;
+        max-width: 250px;
+        text-align: center;
+    }
+}
+
+/* ==================================================
+   REGRAS DE CONTRASANTE PARA O MODO CLARO (LIGHT-MODE)
+   ================================================== */
+body.light-mode {
+    background-color: #f5f5f7 !important;
+    color: #1d1d1f !important;
+}
+
+body.light-mode .navbar, 
+body.light-mode footer {
+    background-color: #ffffff !important;
+    border-color: #e5e5e7 !important;
+}
+
+body.light-mode .nav-links a,
+body.light-mode .card p,
+body.light-mode #sobre p,
+body.light-mode #contato p {
+    color: #6e6e73 !important;
+}
+
+body.light-mode .card,
+body.light-mode .btn-contato {
+    background-color: #ffffff !important;
+    border-color: #e5e5e7 !important;
+    color: #1d1d1f !important;
+}
+/* ==================================================
+   EFEITOS DE REVELAÇÃO SUAVE (SCROLL ANIMATION)
+   ================================================= */
+
+/* 1. Estado Inicial: Escondido e empurrado 30 pixels para baixo */
+.revelar-elemento {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), 
+                transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* 2. Estado Ativo: Ativado pelo JavaScript quando o bloco aparece na tela */
+.revelar-elemento.visivel {
+    opacity: 1;
+    transform: translateY(0);
+}
+/* ==================================================
+   ANIMAÇÃO DO CURSOR DA MÁQUINA DE ESCREVER
+   ================================================== */
+@keyframes piscar {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}

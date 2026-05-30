@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catálogo Técnico - Empilhadeiras</title>
+  
+  <!-- Links de Fontes e Ícones Corrigidos -->
+  <link href="https://googleapis.com" rel="stylesheet">
+  <link rel="stylesheet" href="https://cloudflare.com">
+  <link rel="stylesheet" href="https://codepenassets.com">
+
+  <style>
+    /* ==================================================
+       CONFIGURAÇÕES E IDENTIDADE (TEMA ESCURO INDUSTRIAL)
+       ================================================== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      font-size: 62.5%;
+    }
+
+    body {
+      background-color: #121212;
+      color: #ffffff;
+      font-family: "Montserrat", arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    /* Botão de retorno padrão do seu Portfólio */
+    .btn-voltar {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 100;
+      padding: 10px 20px;
+      background: #1a1a1a;
+      border: 1px solid #ff3333;
+      border-radius: 6px;
+      color: white;
+      text-decoration: none;
+      font-family: 'Monaco', 'Courier New', monospace;
+      font-size: 11px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-voltar:hover {
+      background: #ff3333;
+      transform: translateY(-2px);
+    }
+
+    /* CONTAINER DO CARROSSEL */
+    .co-carousel-wrap {
+      width: 100%;
+      max-width: 450px;
+      position: relative;
+      z-index: 9;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    /* DESIGN DO CARD DA MÁQUINA */
+    .co-card {
+      position: relative;
+      display: none; /* Controlado pelo JS */
+      align-items: center;
+      justify-content: center;
+      height: 400px;
+      width: 270px;
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: #1a1a1a;
+      background: linear-gradient(163deg, #262626 0%, #0d0d0d 100%);
+    }
+
+    .co-card.active {
+      display: flex;
+      animation: fadeIn 0.4s ease;
+    }
+
+    /* ==================================================
+       ÁREA DA FOTO DA MÁQUINA (IMAGENS GIGANTES)
+       ================================================== */
+    .co-card__shoe {
+      position: absolute;
+      width: 150%; /* Imagens explodindo as laterais do card */
+      flex-shrink: 0;
+      top: -55px; /* Sobe a imagem aproveitando o topo livre */
+      z-index: 15;
+      height: auto;
+      display: flex;
+      justify-content: center;
+    }
+
+    .co-card__shoe-img {
+      user-select: none;
+      width: 100%;
+      max-height: 290px; /* Força os links que você enviou a ficarem enormes */
+      object-fit: contain;
+      display: block;
+    }
+
+    /* ==================================================
+       TEXTOS E INFORMAÇÕES REBAIXADOS PARA O RODAPÉ
+       ================================================== */
+    .co-card__info {
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      padding: 15px 20px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.98) 35%);
+      border-radius: 0 0 20px 20px;
+      color: white;
+      text-align: center;
+    }
+
+    .co-card__title {
+      font-weight: 700;
+      font-size: 1.5rem;
+      text-transform: uppercase;
+      margin-top: 2px;
+      letter-spacing: 0.5px;
+    }
+
+    .co-card__collection {
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      color: #ff3333;
+    }
+
+    .co-card__price {
+      margin-top: 5px;
+      font-weight: 500;
+      font-size: 1.2rem;
+      font-family: 'Monaco', monospace;
+      color: #00ff00;
+    }
+
+    /* ==================================================
+       BOTÕES DE NAVEGAÇÃO COMPLETA DA NIKE
+       ================================================== */
+    .co-carousel__nav-buttons {
+      margin-top: 40px;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .co-carousel__nav-button {
+      padding: 10px 0;
+      width: 150px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+    }
+
+    .co-carousel__nav-button.prev { align-items: flex-end; }
+    .co-carousel__nav-button.next { align-items: flex-start; }
+
+    .co-carousel__nav-button:before {
+      display: block;
+      content: "";
+      width: 100%;
+      height: 1px;
+      background-color: #ffffff;
+      opacity: 0.3;
+      transition: background-color 0.3s;
+    }
+
+    .co-carousel__nav-button:hover:before {
+      background-color: #ff3333;
+      opacity: 1;
+    }
+
+    .co-carousel__nav-button span {
+      font-size: 14px;
+      text-transform: uppercase;
+      padding: 10px 0;
+      color: #ffffff;
+      transition: transform cubic-bezier(0.22, 0.74, 0.46, 0.97) 0.3s, color 0.3s;
+    }
+
+    .co-carousel__nav-button:hover.prev span {
+      transform: translate3d(-10px, 0, 0);
+      color: #ff3333;
+    }
+
+    .co-carousel__nav-button:hover.next span {
+      transform: translate3d(10px, 0, 0);
+      color: #ff3333;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+        /* Ajuste fino para o catálogo caber perfeitamente em telas de celulares */
+    @media (max-width: 480px) {
+      .co-carousel-wrap {
+        max-width: 100%;
+        padding: 10px;
+      }
+      .co-card {
+        width: 220px; /* Encolhe a largura do card para não estourar */
+        height: 340px; /* Reduz um pouco a altura */
+      }
+      .co-card__shoe {
+        width: 140%; /* Ajusta a proporção da empilhadeira */
+        top: -30px;
+      }
+      .co-card__shoe-img {
+        max-height: 200px; /* Limita a altura da foto no celular */
+      }
+      .co-carousel__nav-buttons {
+        margin-top: 25px;
+        padding: 0 10px;
+      }
+      .co-carousel__nav-button {
+        width: 110px; /* Ajusta o tamanho dos botões da Nike na tela pequena */
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Link de Retorno ao Portfólio -->
+  <a href="index.html" class="btn-voltar">
+    <i class="fas fa-arrow-left"></i> Voltar ao Portfólio
+  </a>
+
+  <div class="co-carousel-wrap">
+    
+    <!-- MÁQUINA 1: Pequeno Porte (2.5t) -->
+    <div class="co-card active">
+      <div class="co-card__shoe">
+        <img class="co-card__shoe-img" src="https://frotacia.com.br/wp-content/uploads/2020/06/image001-2.png" alt="Empilhadeira Pequeno Porte">
+      </div>
+      <div class="co-card__info">
+        <div class="co-card__collection">Série Compact</div>
+        <div class="co-card__title">Combustão Pequeno Porte</div>
+        <div class="co-card__price">Capacidade: 2.5t</div>
+      </div>
+    </div>
+
+    <!-- MÁQUINA 2: Elétrica -->
+    <div class="co-card">
+      <div class="co-card__shoe">
+        <img class="co-card__shoe-img" src="https://www.transpotech.com.br/wp-content/uploads/2022/06/Design-sem-nome-4-1024x664.png" alt="Empilhadeira Elétrica">
+      </div>
+      <div class="co-card__info">
+        <div class="co-card__collection">Série EcoPower</div>
+        <div class="co-card__title">Elétrica Alta Eficiência</div>
+        <div class="co-card__price">Bateria de Lítio</div>
+      </div>
+    </div>
+
+    <!-- MÁQUINA 3: Médio Porte (16t) -->
+    <div class="co-card">
+      <div class="co-card__shoe">
+        <img class="co-card__shoe-img" src="https://www.movix.ind.br/wp-content/uploads/2025/09/empilhadeira-serie-me-movix-16ton-1-1.png" alt="Empilhadeira Médio Porte">
+      </div>
+      <div class="co-card__info">
+        <div class="co-card__collection">Série HeavyDuty</div>
+        <div class="co-card__title">Combustão Médio Porte</div>
+        <div class="co-card__price">Capacidade: 16t</div>
+      </div>
+    </div>
+
+    <!-- MÁQUINA 4: Grande Porte / Container (45t+) -->
+    <div class="co-card">
+      <div class="co-card__shoe">
+        <img class="co-card__shoe-img" src="https://guindacodobrasil.com.br/imagecache/service-image/2021/01/19/26d170396d71e56ffb9fcc769d0d0a6a.png" alt="Empilhadeira Grande Porte Container">
+      </div>
+      <div class="co-card__info">
+        <div class="co-card__collection">Terminais Portuários</div>
+        <div class="co-card__title">Grande Porte / Container</div>
+        <div class="co-card__price">Capacidade: 45t+</div>
+      </div>
+    </div>
+
+    <!-- BOTÕES DE NAVEGAÇÃO RECONSTRUÍDOS COMPLETOS -->
+    <div class="co-carousel__nav-buttons">
+      <div class="co-carousel__nav-button prev" id="prevBtn">
+        <span>Prev</span>
+      </div>
+      <div class="co-carousel__nav-button next" id="nextBtn">
+        <span>Next</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Lógica de Navegação Customizada -->
+  <script>
+    const slides = document.querySelectorAll('.co-card');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    let currentIndex = 0;
+
+    function showSlide(index) {
+      slides[currentIndex].classList.remove('active');
+      
+      currentIndex = index;
+      if (currentIndex >= slides.length) currentIndex = 0;
+      if (currentIndex < 0) currentIndex = slides.length - 1;
+
+      slides[currentIndex].classList.add('active');
+    }
+
+    nextBtn.addEventListener('click', () => {
+      showSlide(currentIndex + 1);
+    });
+
+    prevBtn.addEventListener('click', () => {
+      showSlide(currentIndex - 1);
+    });
+  </script>
+
+</body>
+</html>

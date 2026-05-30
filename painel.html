@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Toyota Supra 2JZ - Telemetria Virtual</title>
+  <link rel="stylesheet" href="https://cloudflare.com">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #080808;
+      color: #fff;
+      font-family: 'Monaco', 'Courier New', Courier, monospace;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border: 0px solid #ff3333;
+      box-shadow: inset 0 0 0px rgba(255, 51, 51, 0);
+      z-index: 1; 
+      pointer-events: none;
+      transition: border-width 0.1s, box-shadow 0.1s;
+    }
+
+    body.limite-giro::before {
+      border-width: 8px;
+      box-shadow: inset 0 0 60px rgba(255, 51, 51, 0.9), 0 0 30px rgba(255, 51, 51, 0.6);
+    }
+
+    .btn-voltar {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 200;
+      padding: 10px 20px;
+      background: #141414;
+      border: 1px solid #ff3333;
+      border-radius: 6px;
+      color: white;
+      text-decoration: none;
+      font-size: 11px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s;
+    }
+
+    .btn-voltar:hover {
+      background: #ff3333;
+      transform: translateY(-2px);
+    }
+
+    .cockpit-container {
+      text-align: center;
+      z-index: 10;
+      transition: transform 0.05s linear;
+    }
+
+    .titulo-painel {
+      font-size: 13px;
+      letter-spacing: 5px;
+      color: #ff3333;
+      text-shadow: 0 0 10px rgba(255, 51, 51, 0.4);
+      margin-bottom: 25px;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+
+    /* BOTÃO DE IGNÇÃO REESTRUTURADO */
+    .btn-start {
+      background: #111;
+      border: 1px solid #ff3333;
+      color: #ff3333;
+      padding: 14px 28px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-bottom: 30px;
+      transition: all 0.2s;
+      font-family: inherit;
+      box-shadow: 0 0 10px rgba(255, 51, 51, 0.2);
+      position: relative;
+      z-index: 500; 
+    }
+
+    .btn-start.ligado {
+      background: #ff3333;
+      color: white;
+      box-shadow: 0 0 20px rgba(255, 51, 51, 0.6);
+    }
+
+    .gauge {
+      position: relative;
+      width: 240px;
+      height: 240px;
+      background: linear-gradient(145deg, #121212, #050505);
+      border: 5px solid #222;
+      border-radius: 50%;
+      margin: 0 auto 30px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.8), inset 0 0 25px rgba(0,0,0,0.9);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    body.limite-giro .gauge {
+      border-color: #ff3333;
+    }
+
+    .needle {
+      position: absolute;
+      width: 4px;
+      height: 105px;
+      background: #ff3333;
+      bottom: 50%;
+      transform-origin: bottom center;
+      transform: rotate(-120deg);
+      z-index: 5;
+      border-radius: 4px 4px 0 0;
+      box-shadow: 0 0 12px #ff3333;
+      transition: transform 0.05s linear;
+    }
+
+    .gauge-center {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: #080808;
+      border: 4px solid #ff3333;
+      border-radius: 50%;
+      z-index: 6;
+    }
+
+    .digital-display {
+      position: absolute;
+      bottom: 40px;
+      font-size: 34px;
+      font-weight: bold;
+      color: #fff;
+      font-family: monospace;
+    }
+
+    .digital-display span {
+      font-size: 11px;
+      color: #555;
+      display: block;
+      letter-spacing: 2px;
+      margin-top: -2px;
+    }
+
+    .btn-pedal {
+      width: 140px;
+      height: 140px;
+      background: #141414;
+      border: 2px solid #333;
+      border-radius: 50%;
+      color: #555;
+      font-size: 11px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      outline: none;
+      user-select: none;
+      -webkit-user-select: none;
+      transition: all 0.2s;
+      position: relative;
+      z-index: 500;
+    }
+
+    .btn-pedal.liberado {
+      cursor: pointer;
+      color: #bbbbbb;
+      border-color: #555;
+    }
+
+    .btn-pedal.liberado:active, body.limite-giro .btn-pedal {
+      background: #ff3333;
+      color: #fff;
+      border-color: #ff3333;
+      box-shadow: 0 0 25px rgba(255, 51, 51, 0.5);
+      transform: scale(0.96);
+    }
+
+    .instrucao {
+      font-size: 11px;
+      color: #444;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ELEMENTO DE ÁUDIO REAL DE ARRANQUE E RONCO DO MOTOR -->
+    <!-- ELEMENTO DE ÁUDIO REAL TOTALMENTE DESTRAVADO PARA O GITHUB PAGES -->
+  <audio id="audio-supra" loop preload="auto">
+    <!-- URL estável e direta de um repositório aberto do GitHub -->
+    <source src="https://githubusercontent.com" type="audio/mp3">
+  </audio>
+
+
+  <a href="index.html" class="btn-voltar">
+    <i class="fas fa-arrow-left"></i> Voltar ao Portfólio
+  </a>
+
+  <div class="cockpit-container" id="cockpit">
+    <div class="titulo-painel">Toyota Supra MK4 // 2JZ-GTE Engine</div>
+    
+    <!-- Botão de Ignição -->
+    <button class="btn-start" id="startBtn"><i class="fas fa-power-off"></i> LIGAR MOTOR (START)</button>
+
+    <div class="gauge">
+      <div class="needle" id="needle"></div>
+      <div class="gauge-center"></div>
+      <div class="digital-display">
+        <div id="kmh-val">0</div>
+        <span>KM/H</span>
+      </div>
+    </div>
+
+    <button class="btn-pedal" id="pedal">Motor<br>Desligado</button>
+    <div class="instrucao" id="instrucaoTexto">Dê a partida no motor primeiro</div>
+  </div>
+
+  <script>
+    const startBtn = document.getElementById('startBtn');
+    const pedal = document.getElementById('pedal');
+    const needle = document.getElementById('needle');
+    const kmhVal = document.getElementById('kmh-val');
+    const cockpit = document.getElementById('cockpit');
+    const instrucaoTexto = document.getElementById('instrucaoTexto');
+    const audioSupra = document.getElementById('audio-supra');
+
+    let velocidadeAtual = 0;
+    let acelerando = false;
+    let loopAceleracao;
+    let motorLigado = false;
+
+    // Configuração inicial estável do reprodutor de áudio nativo
+    audioSupra.volume = 0.4;
+    audioSupra.playbackRate = 0.8;
+
+    function alternarMotor() {
+      if (!motorLigado) {
+        motorLigado = true;
+        
+        // Dispara o arquivo .mp3 (Aceito nativamente por todos os celulares e computadores)
+        audioSupra.play().catch(e => console.log("Bloqueio de áudio"));
+
+        startBtn.classList.add('ligado');
+        startBtn.innerHTML = '<i class="fas fa-power-off"></i> DESLIGAR MOTOR';
+        
+        pedal.classList.add('liberado');
+        pedal.innerHTML = 'Pressionar<br>Acelerar';
+        instrucaoTexto.textContent = 'Segure para escutar o ronco e subir o giro';
+        
+        loopAceleracao = requestAnimationFrame(atualizarPainel);
+      } else {
+        motorLigado = false;
+        acelerando = false;
+        velocidadeAtual = 0;
+        
+        audioSupra.pause();
+        audioSupra.currentTime = 0;
+        
+        startBtn.classList.remove('ligado');
+        startBtn.innerHTML = '<i class="fas fa-power-off"></i> LIGAR MOTOR (START)';
+        
+        pedal.classList.remove('liberado');
+        pedal.innerHTML = 'Motor<br>Desligado';
+        instrucaoTexto.textContent = 'Dê a partida no motor primeiro';
+        
+        kmhVal.textContent = "0";
+        needle.style.transform = `rotate(-120deg)`;
+        document.body.classList.remove('limite-giro');
+        cockpit.style.transform = 'translate(0, 0)';
+        cancelAnimationFrame(loopAceleracao);
+      }
+    }
+
+    // Vincula a ação de clique comum de forma direta e limpa
+    startBtn.onclick = alternarMotor;
+
+    function atualizarPainel() {
+      if (!motorLigado) return;
+
+      if (acelerando) {
+        if (velocidadeAtual < 320) velocidadeAtual += 3.5;
+      } else {
+        if (velocidadeAtual > 0) velocidadeAtual -= 4.5;
+        if (velocidadeAtual < 0) velocidadeAtual = 0;
+      }
+
+      kmhVal.textContent = Math.floor(velocidadeAtual);
+
+      const r = -120 + (velocidadeAtual * 0.78);
+      needle.style.transform = `rotate(${r}deg)`;
+
+      // MODULAÇÃO DO ÁUDIO REAL: Altera a velocidade e volume do áudio baseado no painel
+      if (velocidadeAtual > 0) {
+        audioSupra.playbackRate = 0.8 + (velocidadeAtual / 160); // O som fica agudo e rápido
+        audioSupra.volume = 0.4 + (velocidadeAtual / 320) * 0.4;  // O volume aumenta na aceleração
+      } else {
+        audioSupra.playbackRate = 0.8; // Marcha lenta suave
+        audioSupra.volume = 0.4;
+      }
+
+      if (velocidadeAtual > 230) {
+        document.body.classList.add('limite-giro');
+        const tremorX = (Math.random() - 0.5) * 4;
+        const tremorY = (Math.random() - 0.5) * 4;
+        cockpit.style.transform = `translate(${tremorX}px, ${tremorY}px)`;
+      } else {
+        document.body.classList.remove('limite-giro');
+        cockpit.style.transform = 'translate(0, 0)';
+      }
+
+      loopAceleracao = requestAnimationFrame(atualizarPainel);
+    }
+
+    // Captura o toque do acelerador sem prevenção de comportamento para evitar travas mobile
+    pedal.addEventListener('mousedown', () => { if(motorLigado) acelerando = true; });
+    document.addEventListener('mouseup', () => { acelerando = false; });
+    
+    pedal.addEventListener('touchstart', () => { if(motorLigado) acelerando = true; });
+    document.addEventListener('touchend', () => { acelerando = false; });
+  </script>
+
+</body>
+</html>

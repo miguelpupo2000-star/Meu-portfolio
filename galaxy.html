@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <!-- ESTA LINHA É OBRIGATÓRIA PARA O CELULAR SABER O TAMANHO DA TELA -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Galaxy S26 Privacy - Portfólio</title>
+  <link rel="stylesheet" href="https://cloudflare.com">
+  <link rel="stylesheet" href="galaxy.css">
+</head>
+<body>
+
+
+  <div class="scene">
+    <!-- Bloco do Celular 3D -->
+    <div class="phone" id="phone">
+      <div class="back"></div>
+      <div class="edge edge-r"></div>
+      <div class="edge edge-l"></div>
+      <div class="edge edge-t"></div>
+      <div class="edge edge-b"></div>
+      
+      <div class="bezel">
+        <div class="inner">
+          <div class="screen" id="screen">
+            <div class="wallpaper"></div>
+
+            <!-- Barra de Status do Topo -->
+            <div class="status-bar">
+              <span class="time">10:00</span>
+              <div class="status-icons">
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+              </div>
+            </div>
+
+            <!-- Notificação Personalizada -->
+            <div class="notification" id="notif">
+              <div class="notif-header">
+                <div class="notif-icon"><i class="fas fa-code"></i></div>
+                <span class="notif-app">Dev Notification</span>
+                <span class="notif-when">agora</span>
+              </div>
+              <span class="notif-title">Status do Sistema</span>
+              <div class="notif-body">Modo de privacidade ativado. Gire o dispositivo para ler.</div>
+            </div>
+
+            <!-- Conteúdo Central Oculto -->
+            <div class="secret-content">
+              <h3>Meus Estudos:</h3>
+              <p>• HTML5 Avançado</p>
+              <p>• CSS3 Responsivo</p>
+              <p>• JavaScript Interativo</p>
+            </div>
+
+            <!-- Barra de Navegação Inferior (Dock) -->
+            <div class="dock">
+              <a class="dock-icon di-code" href="index.html" aria-label="Portfólio"><i class="fas fa-home"></i></a>
+              <a class="dock-icon di-git" href="https://github.com" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+            </div>
+
+            <div class="home-bar"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Painel de Controle Lateral Completo -->
+    <div class="panel">
+      <div>
+        <div class="panel-title">Privacy Display</div>
+        <div class="panel-sub">Refatorado por Você</div>
+      </div>
+      
+      <div class="mode-toggle">
+        <button class="mode-btn active" data-mode="full">Tela Inteira</button>
+        <button class="mode-btn" data-mode="notif">Notificação</button>
+      </div>
+      
+      <div class="angle-readout">Ângulo de Visão: <span class="angle-val" id="angleVal">0°</span></div>
+      
+      <!-- BOTÃO INTELIGENTE DE ATIVAÇÃO DO GIROSCÓPIO -->
+      <div id="gyro-container" style="margin-top: 10px; display: none;">
+        <button id="btn-atirar-gyro" style="width: 100%; padding: 12px; background: #262626; border: 1px solid #ff3333; color: white; border-radius: 6px; font-size: 11px; font-weight: bold; cursor: pointer; font-family: inherit;">
+          <i class="fas fa-mobile-alt"></i> Ativar Giroscópio 3D
+        </button>
+      </div>
+      
+      <!-- Seletor de Papéis de Parede -->
+      <div style="margin-top: 15px;">
+        <div style="font-size: 11px; color: #aaa; margin-bottom: 10px; font-weight: bold;">Mudar Wallpaper:</div>
+        <div class="wallpaper-selector" style="display: flex; gap: 10px;">
+          <div class="wall-option active" data-bg="radial-gradient(circle at center, #3a0000 0%, #0a0000 100%)" style="flex: 1; height: 35px; background: radial-gradient(circle at center, #3a0000 0%, #0a0000 100%); border-radius: 6px; cursor: pointer; border: 2px solid #ff3333;"></div>
+          <div class="wall-option" data-bg="linear-gradient(135deg, #121212 0%, #262626 100%)" style="flex: 1; height: 35px; background: linear-gradient(135deg, #121212 0%, #262626 100%); border-radius: 6px; cursor: pointer; border: 2px solid #444;"></div>
+          <div class="wall-option" data-bg="radial-gradient(circle at center, #1a0033 0%, #050010 100%)" style="flex: 1; height: 35px; background: radial-gradient(circle at center, #1a0033 0%, #050010 100%); border-radius: 6px; cursor: pointer; border: 2px solid #444;"></div>
+        </div>
+      </div>
+
+      <div class="hint">Mova o cursor ou incline o celular para testar o filtro de privacidade preto do dispositivo.</div>
+
+      <!-- Botões de Navegação -->
+      <div style="margin-top: 20px; display: flex; flex-direction: column; gap: 10px;">
+        <a href="index.html" style="display: block; width: 100%; padding: 12px; background: #262626; border: 1px solid #ff3333; color: white; text-decoration: none; text-align: center; border-radius: 8px; font-size: 11px; font-weight: bold; transition: 0.2s;">
+          <i class="fas fa-arrow-left"></i> Voltar ao Portfólio
+        </a>
+        <a href="https://github.com" target="_blank" style="display: block; width: 100%; padding: 12px; background: #ff3333; color: white; text-decoration: none; text-align: center; border-radius: 8px; font-size: 11px; font-weight: bold; transition: 0.2s;">
+          <i class="fab fa-github"></i> Ver Meu GitHub
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script src="galaxy.js"></script>
+</body>
+</html>

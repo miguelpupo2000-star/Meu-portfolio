@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Portfólio</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- NENHUM CÓDIGO INTERNO DE STYLE AQUI MAIS -->
+</head>
+<body>
+
+    <!-- Menu de Navegação Atualizado -->
+    <nav class="navbar">
+        <div class="logo">Miguel</div>
+        <ul class="nav-links">
+            
+            <!-- O botão de clique continua aqui na lista -->
+            <li>
+                <button id="btn-tema" style="background: transparent; border: 1px solid #ff3333; color: #ff3333; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-family: 'Monaco', monospace; font-size: 11px; font-weight: bold; transition: 0.2s; margin-right: 10px;">
+                    <i class="fas fa-sun"></i> Modo Claro
+                </button>
+            </li>
+
+            <li><a href="#sobre">Sobre</a></li>
+            <li><a href="#projetos">Projetos</a></li>
+            <li><a href="#contato">Contato</a></li>
+            <li><a href="login.html" class="btn-admin-link" style="color: #ff3333; font-weight: bold; border: 1px solid #ff3333; padding: 5px 10px; border-radius: 4px;">Admin</a></li>
+        </ul>
+    </nav>
+
+
+
+    <!-- Seção de Apresentação -->
+    <header class="hero">
+        <h1 id="titulo-boas-vindas">Olá, eu sou o Miguel 👋</h1>
+                <!-- Procure por esta linha no seu index.html e mude para ficar assim: -->
+        <p>Desenvolvedor Web <span id="texto-digitado" style="color: #ff3333; font-weight: bold;">Front-End</span><span class="cursor-piscando" style="color: #ff3333; font-weight: bold; animation: piscar 0.7s infinite;">|</span> em formação</p>
+
+        <!-- Nova caixa de texto para o usuário digitar -->
+        <div style="margin-bottom: 20px;">
+            <input type="text" id="campo-nome" placeholder="Digite seu nome aqui..." style="padding: 10px; font-family: 'Monaco', monospace; border-radius: 5px; border: none; width: 250px; text-align: center;">
+        </div>
+
+        <a href="#projetos" class="btn">Ver Meus Projetos</a>
+        <button id="btn-mudar-texto" class="btn" style="margin-left: 10px; background-color: #ff3333; color: white;">Enviar</button>
+    </header>
+
+
+    <!-- Conteúdo Principal -->
+    <main class="container">
+        
+        <!-- Sobre Mim -->
+        <section id="sobre" class="section">
+            <h2>Sobre Mim</h2>
+            <p>Estou aprendendo HTML, CSS e JavaScript para criar interfaces web incríveis. Gosto de resolver problemas através do código e estou em busca constante de evolução técnica.</p>
+        </section>
+
+               <!-- Meus Projetos (Prontos para o futuro) -->
+        <section id="projetos" class="section">
+            <h2>Meus Projetos</h2>
+            <div class="card-grid">
+                
+                                <!-- Projeto 1 (Seu Simulador 3D Galaxy) -->
+                <div class="card">
+                    <h3>Simulador Galaxy 3D 📱</h3>
+                    <p>Um simulador interativo em 3D do Galaxy S26 Ultra com sistema de película de privacidade, relógio real e troca de papéis de parede.</p>
+                    <!-- NOVO LINK: Aponta diretamente para o seu novo arquivo html -->
+                    <a href="galaxy.html" class="link-projeto">Abrir Projeto →</a>
+                </div>
+
+
+                              <!-- Projeto 2: Catálogo de Empilhadeiras -->
+                <div class="card">
+                    <h3>Catálogo Industrial 🚜</h3>
+                    <p>Um catálogo técnico e interativo de empilhadeiras por porte com foco em usabilidade, imagens expandidas e navegação minimalista animada.</p>
+                    <!-- Link direcionando direto para o seu arquivo de catálogo -->
+                    <a href="catalogo.html" class="link-projeto">Abrir Catálogo →</a>
+                </div>
+
+
+            </div>
+        </section>
+
+
+               <!-- Contato Atualizado -->
+        <section id="contato" class="section">
+            <h2>Contato</h2>
+            <p>Se você gostou do meu trabalho ou quer trocar uma ideia, mande uma mensagem!</p>
+                        <!-- Procure por esta linha na seção de contato do seu index.html e mude para: -->
+            <div class="contato-links">
+                <a href="mailto:migueldev.contato@gmail.com" id="link-email" class="btn-contato">Enviar E-mail</a>
+                <a href="https://github.com" target="_blank" class="btn-contato">Meu GitHub</a>
+            </div>
+
+        </section>
+
+
+    </main>
+
+    <!-- Rodapé -->
+    <footer>
+        <p>© 2026 - Desenvolvido por Miguel</p>
+    </footer>
+
+    <!-- Conectando o arquivo JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
