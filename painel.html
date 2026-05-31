@@ -15,7 +15,7 @@
     }
     body::before {
       content: ''; position: absolute; inset: 0; border: 0px solid #ff3333;
-      box-shadow: inset 0 0 0px rgba(255, 51, 51, 0); z-index: 1; pointer-events: none; transition: border-width 0.1s, box-shadow 0.1s;
+      box-shadow: inset 0 0 0px rgba(255, 51, 51, 0), 0 0 0px rgba(255, 51, 51, 0); z-index: 1; pointer-events: none; transition: border-width 0.1s, box-shadow 0.1s;
     }
     body.limite-giro::before {
       border-width: 10px; box-shadow: inset 0 0 60px rgba(255, 51, 51, 0.9), 0 0 40px rgba(255, 51, 51, 0.6);
@@ -79,18 +79,25 @@
     const instrucaoTexto = document.getElementById('instrucaoTexto');
 
     let velocidadeAtual = 0; let acelerando = false; let loopAceleracao; let motorLigado = false;
-    let audioCtx, osc1, osc2, osc3, mainGain, lowpass;
+    let audioCtx, osc1, osc2, mainGain, lowpass;
 
     function iniciarRoncoSupercarro() {
       if (!audioCtx) {
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        osc1 = audioCtx.createOscillator(); osc1.type = 'sawtooth'; osc1.frequency.setValueAtTime(38, audioCtx.currentTime); 
-        osc2 = audioCtx.createOscillator(); osc2.type = 'sawtooth'; osc2.frequency.setValueAtTime(76, audioCtx.currentTime);
-        osc3 = audioCtx.createOscillator(); osc3.type = 'triangle'; osc3.frequency.setValueAtTime(114, audioCtx.currentTime);
-        lowpass = audioCtx.createBiquadFilter(); lowpass.type = 'lowpass'; lowpass.frequency.setValueAtTime(380, audioCtx.currentTime);
-        mainGain = audioCtx.createGain(); mainGain.gain.setValueAtTime(0.04, audioCtx.currentTime); 
-        osc1.connect(lowpass); osc2.connect(lowpass); osc3.connect(lowpass); lowpass.connect(mainGain); mainGain.connect(audioCtx.destination);
-        osc1.start(); osc2.start(); osc3.start();
+        
+        // Oscilador 1: Onda dente de serra super grave (Fundo do motor Boxer pesado)
+        osc1 = audioCtx.createOscillator(); osc1.type = 'sawtooth'; osc1.frequency.setValueAtTime(24, audioCtx.currentTime); 
+        
+        // Oscilador 2: Segunda camada harmônica (Aceleração áspera de escape)
+        osc2 = audioCtx.createOscillator(); osc2.type = 'sawtooth'; osc2.frequency.setValueAtTime(48, audioCtx.currentTime);
+
+        // Filtro acústico fechado (Segura o chiado fino e deixa passar o som encorpado)
+        lowpass = audioCtx.createBiquadFilter(); lowpass.type = 'lowpass'; lowpass.frequency.setValueAtTime(280, audioCtx.currentTime);
+        
+        mainGain = audioCtx.createGain(); mainGain.gain.setValueAtTime(0.06, audioCtx.currentTime); // Volume encorpado seguro
+        
+        osc1.connect(lowpass); osc2.connect(lowpass); lowpass.connect(mainGain); mainGain.connect(audioCtx.destination);
+        osc1.start(); osc2.start();
       }
     }
 
@@ -105,7 +112,7 @@
         loopAceleracao = requestAnimationFrame(atualizarPainel);
       } else {
         motorLigado = false; acelerando = false; velocidadeAtual = 0;
-        if (audioCtx) { mainGain.gain.setValueAtTime(0, audioCtx.currentTime); osc1.stop(); osc2.stop(); osc3.stop(); audioCtx.close(); audioCtx = null; }
+        if (audioCtx) { mainGain.gain.setValueAtTime(0, audioCtx.currentTime); osc1.stop(); osc2.stop(); audioCtx.close(); audioCtx = null; }
         startBtn.classList.remove('ligado'); startBtn.innerHTML = '<i class="fas fa-key"></i> DAR PARTIDA (START)';
         pedal.classList.remove('liberado'); pedal.innerHTML = 'Motor<br>Desligado';
         instrucaoTexto.textContent = 'Gire a chave no painel primeiro';
@@ -124,12 +131,22 @@
       else { if (velocidadeAtual > 0) velocidadeAtual -= 5.5; if (velocidadeAtual < 0) velocidadeAtual = 0; }
       kmhVal.textContent = Math.floor(velocidadeAtual);
       const r = -120 + (velocidadeAtual * 0.76); needle.style.transform = `rotate(${r}deg)`;
+      
       if (audioCtx && osc1 && lowpass) {
         if (velocidadeAtual > 0) {
-          let fBase = 38 + (velocidadeAtual * 1.9); osc1.frequency.setValueAtTime(fBase, audioCtx.currentTime); osc2.frequency.setValueAtTime(fBase * 2, audioCtx.currentTime); osc3.frequency.setValueAtTime(fBase * 3, audioCtx.currentTime);
-          lowpass.frequency.setValueAtTime(380 + (velocidadeAtual * 7), audioCtx.currentTime); mainGain.gain.setValueAtTime(0.04 + (velocidadeAtual / 312) * 0.04, audioCtx.currentTime);
+          // Ajustado multiplicador de subida de giro para o som subir encorpado e pesado
+          let fBase = 24 + (velocidadeAtual * 0.95); 
+          osc1.frequency.setValueAtTime(fBase, audioCtx.currentTime);
+          osc2.frequency.setValueAtTime(fBase * 2, audioCtx.currentTime);
+          
+          // Abre o filtro de forma dosada (Sem deixar o som virar agudo demais)
+          lowpass.frequency.setValueAtTime(280 + (velocidadeAtual * 3.5), audioCtx.currentTime);
+          mainGain.gain.setValueAtTime(0.06 + (velocidadeAtual / 312) * 0.04, audioCtx.currentTime);
         } else {
-          osc1.frequency.setValueAtTime(38, audioCtx.currentTime); osc2.frequency.setValueAtTime(76, audioCtx.currentTime); osc3.frequency.setValueAtTime(114, audioCtx.currentTime); lowpass.frequency.setValueAtTime(380, audioCtx.currentTime); mainGain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+          osc1.frequency.setValueAtTime(24, audioCtx.currentTime);
+          osc2.frequency.setValueAtTime(48, audioCtx.currentTime);
+          lowpass.frequency.setValueAtTime(280, audioCtx.currentTime);
+          mainGain.gain.setValueAtTime(0.06, audioCtx.currentTime);
         }
       }
       if (velocidadeAtual > 240) {
