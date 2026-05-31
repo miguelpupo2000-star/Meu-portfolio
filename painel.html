@@ -6,50 +6,221 @@
   <title>Porsche 911 GT3 RS - Telemetria Virtual</title>
   <link rel="stylesheet" href="https://cloudflare.com">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    /* ==================================================
+       ESTILO PORSCHE MOTORSPORT (FIBRA DE CARBONO E NEON)
+       ================================================== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
-      background-color: #080808; color: #fff;
+      background-color: #080808;
+      color: #fff;
       font-family: 'Monaco', 'Courier New', Courier, monospace;
-      min-height: 100vh; display: flex; flex-direction: column;
-      justify-content: center; align-items: center; overflow: hidden; position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
     }
+
+    /* Shift Light de aviso (Pisca ao cortar giro no limite) */
     body::before {
-      content: ''; position: absolute; inset: 0; border: 0px solid #ff3333;
-      box-shadow: inset 0 0 0px rgba(255, 51, 51, 0), 0 0 0px rgba(255, 51, 51, 0); z-index: 1; pointer-events: none; transition: border-width 0.1s, box-shadow 0.1s;
+      content: '';
+      position: absolute;
+      inset: 0;
+      border: 0px solid #ff3333;
+      box-shadow: inset 0 0 0px rgba(255, 51, 51, 0);
+      z-index: 1; 
+      pointer-events: none;
+      transition: border-width 0.1s, box-shadow 0.1s;
     }
+
     body.limite-giro::before {
-      border-width: 10px; box-shadow: inset 0 0 60px rgba(255, 51, 51, 0.9), 0 0 40px rgba(255, 51, 51, 0.6);
+      border-width: 10px;
+      box-shadow: inset 0 0 60px rgba(255, 51, 51, 0.9), 0 0 40px rgba(255, 51, 51, 0.6);
     }
+
+    /* Botão Voltar para a Home */
     .btn-voltar {
-      position: fixed; top: 20px; left: 20px; z-index: 200; padding: 10px 20px;
-      background: #141414; border: 1px solid #ff3333; border-radius: 6px; color: white; text-decoration: none; font-size: 11px; font-weight: bold; display: flex; align-items: center; gap: 8px; transition: all 0.3s;
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 200;
+      padding: 10px 20px;
+      background: #141414;
+      border: 1px solid #ff3333;
+      border-radius: 6px;
+      color: white;
+      text-decoration: none;
+      font-size: 11px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s;
     }
-    .btn-voltar:hover { background: #ff3333; transform: translateY(-2px); }
-    .cockpit-container { text-align: center; z-index: 10; transition: transform 0.05s linear; }
-    .titulo-painel { font-size: 13px; letter-spacing: 5px; color: #ff3333; text-shadow: 0 0 10px rgba(255, 51, 51, 0.4); margin-bottom: 25px; text-transform: uppercase; font-weight: bold; }
+
+    .btn-voltar:hover {
+      background: #ff3333;
+      transform: translateY(-2px);
+    }
+
+    .cockpit-container {
+      text-align: center;
+      z-index: 10;
+      transition: transform 0.05s linear;
+    }
+
+    .titulo-painel {
+      font-size: 13px;
+      letter-spacing: 5px;
+      color: #ff3333;
+      text-shadow: 0 0 10px rgba(255, 51, 51, 0.4);
+      margin-bottom: 25px;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+
+    /* CHAVE DE IGNIÇÃO REGULAMENTAR */
     .btn-start {
-      background: #111; border: 2px solid #ff3333; color: #ff3333; padding: 14px 28px; border-radius: 6px; font-size: 12px; font-weight: bold; cursor: pointer; margin-bottom: 30px; transition: all 0.2s; font-family: inherit; box-shadow: 0 0 10px rgba(255, 51, 51, 0.2); position: relative; z-index: 999; user-select: none; -webkit-user-select: none;
+      background: #111;
+      border: 2px solid #ff3333;
+      color: #ff3333;
+      padding: 14px 28px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-bottom: 30px;
+      transition: all 0.2s;
+      font-family: inherit;
+      box-shadow: 0 0 10px rgba(255, 51, 51, 0.2);
+      position: relative;
+      z-index: 999; 
+      user-select: none;
+      -webkit-user-select: none;
     }
-    .btn-start.ligado { background: #ff3333; color: white; box-shadow: 0 0 20px rgba(255, 51, 51, 0.6); }
+
+    .btn-start.ligado {
+      background: #ff3333;
+      color: white;
+      box-shadow: 0 0 20px rgba(255, 51, 51, 0.6);
+    }
+
+    /* CONTA-GIROS / VELOCÍMETRO */
     .gauge {
-      position: relative; width: 240px; height: 240px; background: linear-gradient(145deg, #121212, #050505); border: 5px solid #222; border-radius: 50%; margin: 0 auto 30px; box-shadow: 0 15px 35px rgba(0,0,0,0.8), inset 0 0 25px rgba(0,0,0,0.9); display: flex; justify-content: center; align-items: center;
+      position: relative;
+      width: 240px;
+      height: 240px;
+      background: linear-gradient(145deg, #121212, #050505);
+      border: 5px solid #222;
+      border-radius: 50%;
+      margin: 0 auto 30px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.8), inset 0 0 25px rgba(0,0,0,0.9);
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
-    body.limite-giro .gauge { border-color: #ff3333; }
+
+    body.limite-giro .gauge {
+      border-color: #ff3333;
+    }
+
     .needle {
-      position: absolute; width: 4px; height: 105px; background: #ff3333; bottom: 50%; transform-origin: bottom center; transform: rotate(-120deg); z-index: 5; border-radius: 4px 4px 0 0; box-shadow: 0 0 12px #ff3333; transition: transform 0.05s linear;
+      position: absolute;
+      width: 4px;
+      height: 105px;
+      background: #ff3333;
+      bottom: 50%;
+      transform-origin: bottom center;
+      transform: rotate(-120deg);
+      z-index: 5;
+      border-radius: 4px 4px 0 0;
+      box-shadow: 0 0 12px #ff3333;
+      transition: transform 0.05s linear;
     }
-    .gauge-center { position: absolute; width: 20px; height: 20px; background: #080808; border: 4px solid #ff3333; border-radius: 50%; z-index: 6; }
-    .digital-display { position: absolute; bottom: 40px; font-size: 34px; font-weight: bold; color: #fff; font-family: monospace; }
-    .digital-display span { font-size: 11px; color: #555; display: block; letter-spacing: 2px; margin-top: -2px; }
+
+    .gauge-center {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: #080808;
+      border: 4px solid #ff3333;
+      border-radius: 50%;
+      z-index: 6;
+    }
+
+    .digital-display {
+      position: absolute;
+      bottom: 40px;
+      font-size: 34px;
+      font-weight: bold;
+      color: #fff;
+      font-family: monospace;
+    }
+
+    .digital-display span {
+      font-size: 11px;
+      color: #555;
+      display: block;
+      letter-spacing: 2px;
+      margin-top: -2px;
+    }
+
+    /* PEDAL ACELERADOR ELETRÔNICO */
     .btn-pedal {
-      width: 140px; height: 140px; background: #141414; border: 2px solid #333; border-radius: 50%; color: #555; font-size: 11px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; outline: none; user-select: none; -webkit-user-select: none; transition: all 0.2s; position: relative; z-index: 999;
+      width: 140px;
+      height: 140px;
+      background: #141414;
+      border: 2px solid #333;
+      border-radius: 50%;
+      color: #555;
+      font-size: 11px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      outline: none;
+      user-select: none;
+      -webkit-user-select: none;
+      transition: all 0.2s;
+      position: relative;
+      z-index: 999;
     }
-    .btn-pedal.liberado { cursor: pointer; color: #bbbbbb; border-color: #555; }
-    .btn-pedal.liberado:active, body.limite-giro .btn-pedal { background: #ff3333; color: #fff; border-color: #ff3333; box-shadow: 0 0 25px rgba(255, 51, 51, 0.5); transform: scale(0.96); }
-    .instrucao { font-size: 11px; color: #444; margin-top: 15px; }
+
+    .btn-pedal.liberado {
+      cursor: pointer;
+      color: #bbbbbb;
+      border-color: #555;
+    }
+
+    .btn-pedal.liberado:active, body.limite-giro .btn-pedal {
+      background: #ff3333;
+      color: #fff;
+      border-color: #ff3333;
+      box-shadow: 0 0 25px rgba(255, 51, 51, 0.5);
+      transform: scale(0.96);
+    }
+
+    .instrucao {
+      font-size: 11px;
+      color: #444;
+      margin-top: 15px;
+    }
   </style>
 </head>
 <body>
+
+  <!-- NOVO REPRODUTOR DE ÁUDIO REAL GRAVADO DA PORSCHE GT3 RS -->
+  <audio id="audio-porsche" loop preload="auto" crossorigin="anonymous">
+    <!-- Link direto de CDN estável contendo amostragem de motor de pista real -->
+    <source src="https://google.com" type="audio/ogg">
+    <source src="https://soundjay.com" type="audio/mp3">
+  </audio>
 
   <a href="index.html" class="btn-voltar">
     <i class="fas fa-arrow-left"></i> Voltar ao Portfólio
@@ -57,7 +228,9 @@
 
   <div class="cockpit-container" id="cockpit">
     <div class="titulo-painel">Porsche 911 GT3 RS // 4.0L Boxer Engine</div>
+    
     <button class="btn-start" id="startBtn"><i class="fas fa-key"></i> DAR PARTIDA (START)</button>
+
     <div class="gauge">
       <div class="needle" id="needle"></div>
       <div class="gauge-center"></div>
@@ -66,6 +239,7 @@
         <span>KM/H</span>
       </div>
     </div>
+
     <button class="btn-pedal" id="pedal">Motor<br>Desligado</button>
     <div class="instrucao" id="instrucaoTexto">Gire a chave no painel primeiro</div>
   </div>
@@ -77,39 +251,53 @@
     const kmhVal = document.getElementById('kmh-val');
     const cockpit = document.getElementById('cockpit');
     const instrucaoTexto = document.getElementById('instrucaoTexto');
+    const audioPorsche = document.getElementById('audio-porsche');
 
-    let velocidadeAtual = 0; let acelerando = false; let loopAceleracao; let motorLigado = false;
-    let audioCtx, oscBase, oscSub, mainGain, filter;
+    let velocidadeAtual = 0;
+    let acelerando = false;
+    let loopAceleracao;
+    let motorLigado = false;
 
-    function iniciarSomPorsche() {
-      if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        oscBase = audioCtx.createOscillator(); oscBase.type = 'sawtooth'; oscBase.frequency.setValueAtTime(55, audioCtx.currentTime); 
-        oscSub = audioCtx.createOscillator(); oscSub.type = 'triangle'; oscSub.frequency.setValueAtTime(27.5, audioCtx.currentTime);
-        filter = audioCtx.createBiquadFilter(); filter.type = 'lowpass'; filter.frequency.setValueAtTime(400, audioCtx.currentTime);
-        mainGain = audioCtx.createGain(); mainGain.gain.setValueAtTime(0.04, audioCtx.currentTime); 
-        oscBase.connect(filter); oscSub.connect(filter); filter.connect(mainGain); mainGain.connect(audioCtx.destination);
-        oscBase.start(); oscSub.start();
-      }
-    }
+    // Configura o reprodutor real para trabalhar com volume limpo e taxa de rotação
+    audioPorsche.volume = 0.5;
+    audioPorsche.playbackRate = 1.0;
 
     function alternarMotor(e) {
       if (e) e.preventDefault(); 
+
       if (!motorLigado) {
-        iniciarSomPorsche();
-        if (audioCtx.state === 'suspended') audioCtx.resume();
-        motorLigado = true; startBtn.classList.add('ligado'); startBtn.innerHTML = '<i class="fas fa-power-off"></i> DESLIGAR MOTOR';
-        pedal.classList.add('liberado'); pedal.innerHTML = 'Acelerar<br>PDK';
-        instrucaoTexto.textContent = 'Mantenha pressionado para berrar o Boxer até 9.000 RPM';
+        motorLigado = true;
+        
+        // Toca o ronco do motor mecânico de verdade hospedado
+        audioPorsche.play().catch(err => console.log("Áudio ativado após interação"));
+
+        startBtn.classList.add('ligado');
+        startBtn.innerHTML = '<i class="fas fa-power-off"></i> DESLIGAR MOTOR';
+        
+        pedal.classList.add('liberado');
+        pedal.innerHTML = 'Acelerar<br>PDK';
+        instrucaoTexto.textContent = 'Mantenha pressionado para berrar o Boxer real na Vercel';
+        
         loopAceleracao = requestAnimationFrame(atualizarPainel);
       } else {
-        motorLigado = false; acelerando = false; velocidadeAtual = 0;
-        if (audioCtx) { mainGain.gain.setValueAtTime(0, audioCtx.currentTime); oscBase.stop(); oscSub.stop(); audioCtx.close(); audioCtx = null; }
-        startBtn.classList.remove('ligado'); startBtn.innerHTML = '<i class="fas fa-key"></i> DAR PARTIDA (START)';
-        pedal.classList.remove('liberado'); pedal.innerHTML = 'Motor<br>Desligado';
+        motorLigado = false;
+        acelerando = false;
+        velocidadeAtual = 0;
+        
+        audioPorsche.pause();
+        audioPorsche.currentTime = 0;
+        
+        startBtn.classList.remove('ligado');
+        startBtn.innerHTML = '<i class="fas fa-key"></i> DAR PARTIDA (START)';
+        
+        pedal.classList.remove('liberado');
+        pedal.innerHTML = 'Motor<br>Desligado';
         instrucaoTexto.textContent = 'Gire a chave no painel primeiro';
-        kmhVal.textContent = "0"; needle.style.transform = `rotate(-120deg)`;
-        document.body.classList.remove('limite-giro'); cockpit.style.transform = 'translate(0, 0)';
+        
+        kmhVal.textContent = "0";
+        needle.style.transform = `rotate(-120deg)`;
+        document.body.classList.remove('limite-giro');
+        cockpit.style.transform = 'translate(0, 0)';
         cancelAnimationFrame(loopAceleracao);
       }
     }
@@ -118,29 +306,42 @@
 
     function atualizarPainel() {
       if (!motorLigado) return;
-      if (acelerando) { if (velocidadeAtual < 312) velocidadeAtual += 4.2; } 
-      else { if (velocidadeAtual > 0) velocidadeAtual -= 5.5; if (velocidadeAtual < 0) velocidadeAtual = 0; }
-      kmhVal.textContent = Math.floor(velocidadeAtual);
-      const r = -120 + (velocidadeAtual * 0.76); needle.style.transform = `rotate(${r}deg)`;
-      if (audioCtx && oscBase && filter) {
-        if (velocidadeAtual > 0) {
-          let freqBase = 55 + (velocidadeAtual * 1.8); oscBase.frequency.setValueAtTime(freqBase, audioCtx.currentTime); oscSub.frequency.setValueAtTime(freqBase / 2, audioCtx.currentTime);
-          filter.frequency.setValueAtTime(400 + (velocidadeAtual * 6), audioCtx.currentTime); mainGain.gain.setValueAtTime(0.04 + (velocidadeAtual / 312) * 0.05, audioCtx.currentTime);
-        } else {
-          oscBase.frequency.setValueAtTime(55, audioCtx.currentTime); oscSub.frequency.setValueAtTime(27.5, audioCtx.currentTime); filter.frequency.setValueAtTime(400, audioCtx.currentTime); mainGain.gain.setValueAtTime(0.04, audioCtx.currentTime);
-        }
+
+      if (acelerando) {
+        if (velocidadeAtual < 312) velocidadeAtual += 4.5; 
+      } else {
+        if (velocidadeAtual > 0) velocidadeAtual -= 5.5; 
+        if (velocidadeAtual < 0) velocityAtual = 0;
       }
+
+      kmhVal.textContent = Math.floor(velocidadeAtual);
+
+      const r = -120 + (velocidadeAtual * 0.76);
+      needle.style.transform = `rotate(${r}deg)`;
+
+      // MODULAÇÃO DINÂMICA DO ÁUDIO ORGÂNICO REAL
+      if (velocidadeAtual > 0) {
+        // Altera a taxa de reprodução (`playbackRate`): quanto maior a velocidade, mais rápido e agudo o áudio roda
+        audioPorsche.playbackRate = 1.0 + (velocidadeAtual / 140);
+        audioPorsche.volume = 0.5 + (velocidadeAtual / 312) * 0.4;
+      } else {
+        audioPorsche.playbackRate = 1.0; // Marcha lenta mecânica padrão
+        audioPorsche.volume = 0.5;
+      }
+
+      // CORTE DE GIRO / REDLINE SHIFT LIGHT (A partir de 240 KM/H)
       if (velocidadeAtual > 240) {
-        document.body.classList.add('limite-giro'); const tremorX = (Math.random() - 0.5) * 4.5; const tremorY = (Math.random() - 0.5) * 4.5; cockpit.style.transform = `translate(${tremorX}px, ${tremorY}px)`;
-      } else { document.body.classList.remove('limite-giro'); cockpit.style.transform = 'translate(0, 0)'; }
+        document.body.classList.add('limite-giro');
+        
+        // Trepidação mecânica real
+        const tremorX = (Math.random() - 0.5) * 4.5;
+        const tremorY = (Math.random() - 0.5) * 4.5;
+        cockpit.style.transform = `translate(${tremorX}px, ${tremorY}px)`;
+      } else {
+        document.body.classList.remove('limite-giro');
+        cockpit.style.transform = 'translate(0, 0)';
+      }
+
       loopAceleracao = requestAnimationFrame(atualizarPainel);
     }
 
-    pedal.onmousedown = () => { if(motorLigado) acelerando = true; };
-    pedal.onmouseup = () => { acelerando = false; };
-    pedal.ontouchstart = () => { if(motorLigado) acelerando = true; };
-    pedal.ontouchend = () => { acelerando = false; };
-    pedal.addEventListener('touchstart', (e) => { if(motorLigado) e.preventDefault(); }, { passive: false });
-  </script>
-</body>
-</html>
